@@ -18,7 +18,7 @@ import org.springframework.util.ObjectUtils;
 import java.security.Principal;
 
 @Service
-public class ACLUserService extends EntityService<ACLUser, ACLUserDTO>{
+public class ACLUserService {
 
     private static final Class<ACLUserService> CLAZZ = ACLUserService.class;
     private static final Logger logger = Logger.getLogger(CLAZZ);

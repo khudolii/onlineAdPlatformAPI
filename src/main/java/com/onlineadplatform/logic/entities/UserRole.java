@@ -6,8 +6,6 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.*;
 
 
-import java.util.Set;
-
 @Document (collection = "UserRole")
 @Getter
 @Setter
@@ -17,7 +15,7 @@ public class UserRole {
     @Field(targetType = FieldType.OBJECT_ID)
     public String roleId;
 
-    @Field
+    @Field (targetType = FieldType.STRING)
     @Indexed(unique = true)
     public String roleName;
 }

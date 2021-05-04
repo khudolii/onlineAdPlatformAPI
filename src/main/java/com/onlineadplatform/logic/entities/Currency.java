@@ -16,11 +16,11 @@ public class Currency {
     @Field(targetType = FieldType.OBJECT_ID)
     private String currencyId;
 
-    @Field()
+    @Field(targetType = FieldType.STRING)
     @Indexed(unique = true)
     private String currencyName;
 
-    @Field()
+    @Field(targetType = FieldType.STRING)
     @Indexed(unique = true)
     private String currencyCode;
 }

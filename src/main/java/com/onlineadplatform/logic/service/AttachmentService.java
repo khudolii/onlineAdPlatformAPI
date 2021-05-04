@@ -1,6 +1,5 @@
 package com.onlineadplatform.logic.service;
 
-import com.onlineadplatform.logic.dto.AttachmentDTO;
 import com.onlineadplatform.logic.entities.Attachment;
 import com.onlineadplatform.logic.repository.AttachmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +10,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.Date;
 
 @Service
-public class AttachmentService extends EntityService<Attachment, AttachmentDTO>{
+public class AttachmentService{
 
-    private AttachmentRepository attachmentRepository;
+    private final AttachmentRepository attachmentRepository;
 
     @Autowired
     public AttachmentService(AttachmentRepository attachmentRepository) {

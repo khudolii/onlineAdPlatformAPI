@@ -10,6 +10,7 @@ import java.util.Set;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AdvertisementDTO implements Serializable {
+    private String advertisementId;
     private String title;
     private String description;
     private Double price;
