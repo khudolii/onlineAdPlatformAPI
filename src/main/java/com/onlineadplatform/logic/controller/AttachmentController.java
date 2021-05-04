@@ -19,6 +19,11 @@ public class AttachmentController {
 
     @GetMapping("/run")
     public void runTest() {
+        Attachment attachment = new Attachment();
+        attachment.setAttachmentName("TES2T");
+        attachment.setAttachmentType("typ3e");
+        attachment.setAttachmentDownloadUri("testu3ri");
+        attachmentRepository.save(attachment);
         attachmentRepository.findAll().stream().map(Attachment::toString).forEach(System.out::println);
     }
 }

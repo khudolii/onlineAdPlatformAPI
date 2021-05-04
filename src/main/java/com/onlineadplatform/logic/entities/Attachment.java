@@ -16,8 +16,9 @@ import javax.persistence.Id;
 @ToString
 public class Attachment {
 
-    @Id
-    private Long id;
+    @MongoId
+    @Field(targetType = FieldType.OBJECT_ID)
+    private String id;
 
     @Field(targetType = FieldType.STRING)
     private String attachmentName;

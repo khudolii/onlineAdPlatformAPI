@@ -12,11 +12,12 @@ import java.util.Set;
 public class Category {
 
     @MongoId
-    private Long categoryId;
+    @Field(targetType = FieldType.OBJECT_ID)
+    private String categoryId;
 
     @Field(targetType = FieldType.STRING)
     private String categoryName;
 
-    @DBRef()
+    @DBRef(lazy = true)
     private Set<Advertisement> advertisements;
 }
