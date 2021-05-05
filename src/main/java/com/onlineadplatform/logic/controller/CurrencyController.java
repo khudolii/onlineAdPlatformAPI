@@ -6,6 +6,8 @@ import com.onlineadplatform.logic.facade.CurrencyFacade;
 import com.onlineadplatform.logic.payload.ClientMessageResponse;
 import com.onlineadplatform.logic.payload.ResponseValidator;
 import com.onlineadplatform.logic.service.CurrencyService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +23,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/currency")
 @CrossOrigin
-@PreAuthorize("hasRole('ADMIN')")
+/*ONLY ADMIN CAN ADD CURRENCY*/
 public class CurrencyController {
     private final CurrencyService currencyService;
     private final CurrencyFacade currencyFacade;
     private final ResponseValidator responseValidator;
+    public static final Logger logger = LoggerFactory.getLogger(CurrencyController.class);
 
     @Autowired
     public CurrencyController(CurrencyService currencyService, CurrencyFacade currencyFacade, ResponseValidator responseValidator) {
@@ -41,6 +44,12 @@ public class CurrencyController {
         return new ResponseEntity<>(currencyDTOS, HttpStatus.OK);
     }
 
+    /*
+     * Add new currency. Only admin can add new currency. For create currency need CurrencyDTO object with field:
+     * @currencyName
+     * @currencyCode
+     * */
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/addCurrency")
     public ResponseEntity<Object> addCurrency(@Valid @RequestBody CurrencyDTO currencyDTO, BindingResult bindingResult, Principal principal) {
         ResponseEntity<Object> errors = responseValidator.validate(bindingResult);
@@ -51,6 +60,7 @@ public class CurrencyController {
 
         if (ObjectUtils.isEmpty(currency)) {
             msg.setMessage("Currency didn't create!");
+            logger.error("Currency didn't create! " + currencyDTO);
             return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
         } else {
             msg.setMessage("Currency was added!");

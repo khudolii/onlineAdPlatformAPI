@@ -1,6 +1,8 @@
 package com.onlineadplatform.logic;
 
 public class AppConstants {
+    public static final String FILE_UPLOAD_DIR = "files/";
+    public static final String FILE_DOWNLOAD_PATH = "/api/ads/file/";
 
     //SECURITY
     public static final String SECURITY_SIGN_UP_URL = "/api/auth/*";

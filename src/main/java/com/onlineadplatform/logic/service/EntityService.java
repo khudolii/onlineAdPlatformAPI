@@ -12,6 +12,9 @@ import java.util.stream.Collectors;
 
 public abstract class EntityService<ENTITY, DTO>{
 
+    /*
+    * The DTO object will be migrated to the ENTITY object
+    * */
     public ENTITY getEntity(DTO dto) {
         if (dto == null) {
             return null;
@@ -23,6 +26,9 @@ public abstract class EntityService<ENTITY, DTO>{
         return modelMapper.map(dto, entityClass);
     }
 
+    /*
+    * The ENTITY object will be migrated to the DTO object
+    * */
     public DTO getDTO(ENTITY entity) {
         if (entity == null) {
             return null;

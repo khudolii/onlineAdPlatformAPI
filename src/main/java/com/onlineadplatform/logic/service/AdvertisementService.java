@@ -6,9 +6,9 @@ import com.onlineadplatform.logic.entities.Advertisement;
 import com.onlineadplatform.logic.entities.Category;
 import com.onlineadplatform.logic.entities.Currency;
 import com.onlineadplatform.logic.exceptions.ADAppException;
-import com.onlineadplatform.logic.facade.AdvertisementFacade;
 import com.onlineadplatform.logic.repository.AdvertisementRepository;
-import lombok.Data;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +26,7 @@ public class AdvertisementService {
     private final CurrencyService currencyService;
     private final ACLUserService aclUserService;
     private final AdvertisementRepository advertisementRepository;
+    public static final Logger logger = LoggerFactory.getLogger(AdvertisementService.class);
 
     @Autowired
     public AdvertisementService(CategoryService categoryService,
@@ -78,6 +79,7 @@ public class AdvertisementService {
 
     public List<Advertisement> getAdvertisementsByTitle(String title, Pageable pageable) {
         if (ObjectUtils.isEmpty(title) || ObjectUtils.isEmpty(pageable)) {
+            logger.error("Search objects cannot be null! Title = " + title + "; pageable = " + pageable);
             return new ArrayList<>();
         }
         return advertisementRepository.findAllByTitleContains(title, pageable);
@@ -85,6 +87,7 @@ public class AdvertisementService {
 
     public List<Advertisement> getAdvertisementsByAclUser(Principal principal, Pageable pageable) {
         if (ObjectUtils.isEmpty(principal)) {
+            logger.error("Search objects cannot be null! Principal = " + principal + "; pageable = " + pageable);
             return new ArrayList<>();
         }
         ACLUser aclUser = aclUserService.getCurrentUser(principal);
@@ -93,6 +96,7 @@ public class AdvertisementService {
 
     public List<Advertisement> getAdvertisementsByAclUser(ACLUser aclUser, Pageable pageable) {
         if (ObjectUtils.isEmpty(aclUser) || ObjectUtils.isEmpty(pageable)) {
+            logger.error("Search objects cannot be null! ACLUser = " + aclUser + "; pageable = " + pageable);
             return new ArrayList<>();
         }
         return advertisementRepository.findAllByAclUser(aclUser, pageable);
@@ -100,6 +104,7 @@ public class AdvertisementService {
 
     public List<Advertisement> getAdvertisementByCategory(String categoryName, Pageable pageable) {
         if (ObjectUtils.isEmpty(categoryName)) {
+            logger.error("Search objects cannot be null! Category = " + categoryName + "; pageable = " + pageable);
             return new ArrayList<>();
         }
         Category category = categoryService.findCategoryByName(categoryName);
@@ -108,6 +113,7 @@ public class AdvertisementService {
 
     public List<Advertisement> getAdvertisementByCategory(Category category, Pageable pageable) {
         if (ObjectUtils.isEmpty(category) || ObjectUtils.isEmpty(pageable)) {
+            logger.error("Search objects cannot be null! Category = " + category + "; pageable = " + pageable);
             return new ArrayList<>();
         }
         return advertisementRepository.findAllByCategory(category, pageable);
@@ -115,6 +121,7 @@ public class AdvertisementService {
 
     public List<Advertisement> getAdvertisementByCurrency(String currencyCode, Pageable pageable) {
         if (ObjectUtils.isEmpty(currencyCode)) {
+            logger.error("Search objects cannot be null! CurrencyCode = " + currencyCode + "; pageable = " + pageable);
             return new ArrayList<>();
         }
         Currency currency = currencyService.getCurrencyByCode(currencyCode);
@@ -123,6 +130,7 @@ public class AdvertisementService {
 
     public List<Advertisement> getAdvertisementByCurrency(Currency currency, Pageable pageable) {
         if (ObjectUtils.isEmpty(currency) || ObjectUtils.isEmpty(pageable)) {
+            logger.error("Search objects cannot be null! Currency = " + currency + "; pageable = " + pageable);
             return new ArrayList<>();
         }
         return advertisementRepository.findAllByCurrency(currency, pageable);

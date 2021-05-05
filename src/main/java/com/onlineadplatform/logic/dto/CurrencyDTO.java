@@ -7,9 +7,9 @@ import java.io.Serializable;
 
 @Data
 public class CurrencyDTO implements Serializable {
-    @NotNull
+    @NotNull(message = "Currency Code is null")
     private String currencyCode;
 
-    @NotNull
+    @NotNull (message = "Currency Name is null")
     private String currencyName;
 }

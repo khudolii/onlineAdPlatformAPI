@@ -9,6 +9,8 @@ import com.onlineadplatform.logic.payload.RegistrationRequest;
 import com.onlineadplatform.logic.payload.ResponseValidator;
 import com.onlineadplatform.logic.service.ACLUserService;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,6 +34,8 @@ public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final ACLUserService aclUserService;
 
+    public static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
+
     @Autowired
     public AuthenticationController(JWTTokenProvider jwtTokenProvider, ResponseValidator responseValidator,
                                     AuthenticationManager authenticationManager, ACLUserService aclUserService) {
@@ -41,6 +45,9 @@ public class AuthenticationController {
         this.aclUserService = aclUserService;
     }
 
+    /*
+    * The user will be authenticated. If the authorization is successful, the user will receive a token.
+    * */
     @PostMapping("/login")
     public ResponseEntity<Object> authenticateUser(@Valid @RequestBody LoginRequest loginRequest, BindingResult bindingResult) {
         ResponseEntity<Object> errors = responseValidator.validate(bindingResult);
@@ -51,13 +58,20 @@ public class AuthenticationController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = AppConstants.SECURITY_TOKEN_PREFIX + jwtTokenProvider.generateNewJWTToken(authentication);
-
+        logger.info("Authenticate user with username = " + loginRequest.getUsername());
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("token", jwt);
         return ResponseEntity.ok(jsonObject.toString());
     }
 
-
+    /*
+    * New User Registration. In request body will receive RegistrationRequest object with fields:
+    * @firstName
+    * @lastName
+    * @userName - unique and not null
+    * @password
+    * @confirmPassword - must be equal to the @password
+    * */
     @PostMapping("/registration")
     public ResponseEntity<Object> registerUser(@Valid @RequestBody RegistrationRequest registrationRequest, BindingResult bindingResult) {
         ResponseEntity<Object> errors = responseValidator.validate(bindingResult);
@@ -66,6 +80,7 @@ public class AuthenticationController {
         try {
             aclUserService.addACLUser(registrationRequest);
         } catch (ADAppException e) {
+            logger.error("registerUser: " + e);
             msg.setMessage(e.getMessage());
             return ResponseEntity.badRequest().body(msg);
         }
